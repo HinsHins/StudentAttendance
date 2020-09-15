@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
             val email = email_login_ed.text.toString().trim()
             val password = _password_login_ed.text.toString().trim()
             if(email=="")
-                Toast.makeText(this, "Please enter email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
             else if (password == "")
                 Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show()
             else{
