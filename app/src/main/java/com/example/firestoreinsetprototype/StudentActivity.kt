@@ -54,8 +54,8 @@ class StudentActivity : AppCompatActivity() {
             var id = sid_et.text.toString().trim()
             var name = sname_et.text.toString().trim()
             var email = semail_et.text.toString().trim()
-            val programme = sprogramme_et.text.toString().trim()
-            val country = scountry_et.text.toString().trim()
+            var programme = sprogramme_et.text.toString().trim()
+            var country = scountry_et.text.toString().trim()
 
             if (id != "" && name != "" && email != "" && programme != "" && country != "") {
                 var student = Student(id.toInt(), name, email, programme, country)
