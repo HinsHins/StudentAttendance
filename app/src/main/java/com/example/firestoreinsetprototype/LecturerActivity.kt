@@ -62,7 +62,7 @@ class LecturerActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all fields before insert", Toast.LENGTH_SHORT).show()
         }
 
-        val lecturerRef = fb.collection("lecturer")
+        val lecturerRef = fb.collection("lecturers")
         lecturerRef.get()
             .addOnSuccessListener { result ->
                 for(document in result){
@@ -95,7 +95,7 @@ class LecturerActivity : AppCompatActivity() {
     }
 
     private fun deleteLecturer(lecturer: Lecturer) {
-        val lecturerCollection = fb.collection("lecturer")
+        val lecturerCollection = fb.collection("lecturers")
         realTimeUpdate(lecturerCollection)
         lecturerCollection.document(lecturer.id.toString()).delete().addOnSuccessListener {
             Log.d("", "Lecturer successfully deleted! ")
@@ -108,7 +108,14 @@ class LecturerActivity : AppCompatActivity() {
     private fun writeLecturer(lecturer: Lecturer) {
         val lecturerCollection = fb.collection("lecturers")
         realTimeUpdate(lecturerCollection)
-
+        lecturerCollection.document(lecturer.id.toString())
+            .set(lecturer)
+            .addOnSuccessListener {
+                Log.d("", "Lecturer successfully written!")
+            }
+            .addOnFailureListener { e->
+                Log.w("", "Error writing document",e )
+            }
     }
 
     private fun realTimeUpdate(lecturerRef: CollectionReference) {
@@ -135,8 +142,8 @@ class LecturerActivity : AppCompatActivity() {
                             }
                         }
                         DocumentChange.Type.MODIFIED -> {
-                            hasLecturer(lecturers,doc).let { student ->
-                                val index = lecturers.indexOf(lecturers)
+                            hasLecturer(lecturers,doc).let { lecturer ->
+                                val index = lecturers.indexOf(lecturer)
                                 lecturers[index] = doc
                                 Log.d("modify lecturer", doc.toString())
                             }

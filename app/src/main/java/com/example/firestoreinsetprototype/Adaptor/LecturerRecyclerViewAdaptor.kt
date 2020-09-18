@@ -25,7 +25,7 @@ class LecturerRecyclerViewAdaptor(lecturers: ArrayList<Lecturer>):RecyclerView.A
 //        val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
 //        val view = layoutInflater.inflate(R.layout.student_item,parent,false)
         //With Extension
-        val view = parent.inflate(R.layout.student_item)
+        val view = parent.inflate(R.layout.lecturer_item)
         return LecturerHolder(view)
     }
 

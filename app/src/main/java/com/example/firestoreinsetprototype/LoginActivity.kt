@@ -10,16 +10,15 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
-
+   lateinit var nextScreen:Intent
     val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        nextScreen = Intent(this,MainActivity::class.java)
 
         login_button.setOnClickListener {
-            val intent = Intent(this,MainActivity::class.java)
             val email = email_login_ed.text.toString().trim()
             val password = _password_login_ed.text.toString().trim()
             if(email=="")
@@ -53,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("Success", "signInWithEmail:success")
                     val user = auth.currentUser
-                    startActivity(intent)
+                    startActivity(nextScreen)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("Fail", "signInWithEmail:failure", task.exception)
