@@ -13,12 +13,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firestoreinsetprototype.Adaptor.StudentAdaptor
 import com.example.firestoreinsetprototype.Adaptor.StudentRecyclerViewAdaptor
+import com.example.firestoreinsetprototype.Extension.hideKeyboard
 import com.example.firestoreinsetprototype.Model.Student
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_student.*
+import java.security.cert.Extension
 
 class StudentActivity : AppCompatActivity() {
     private val students = ArrayList<Student>()
@@ -60,7 +62,7 @@ class StudentActivity : AppCompatActivity() {
             if (id != "" && name != "" && email != "" && programme != "" && country != "") {
                 var student = Student(id.toInt(), name, email, programme, country)
                 Log.d("Student", "$student")
-                hideKeyboard(this)
+                hideKeyboard()
                 clearInputs()
                 writeStudent(student)
                 Toast.makeText(this@StudentActivity, "Insert successful", Toast.LENGTH_SHORT)
@@ -197,20 +199,5 @@ class StudentActivity : AppCompatActivity() {
             }
         }
         return null
-    }
-
-    private fun hideKeyboard(activity : AppCompatActivity) {
-        val view = activity.currentFocus
-        if(android.os.Build.VERSION.SDK_INT >= 26) {
-            val imm: InputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            view?.post {
-                imm.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
-            }
-        } else {
-            if (view != null) {
-                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-        }
     }
 }

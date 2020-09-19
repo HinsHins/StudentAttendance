@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firestoreinsetprototype.Adaptor.LecturerRecyclerViewAdaptor
+import com.example.firestoreinsetprototype.Extension.hideKeyboard
 import com.example.firestoreinsetprototype.Model.Lecturer
 import com.example.firestoreinsetprototype.Model.Student
 import com.google.firebase.firestore.CollectionReference
@@ -54,7 +55,7 @@ class LecturerActivity : AppCompatActivity() {
             if (id != "" && name != "" && position != "" && department != "") {
                 var lecturer = Lecturer(id.toInt(), name, position, department)
                 Log.d("Lecturer", "$lecturer")
-                hideKeyboard(this)
+                hideKeyboard()
                 clearInputs()
                 writeLecturer(lecturer)
                 Toast.makeText(this, "Insert successful", Toast.LENGTH_SHORT).show()
@@ -178,22 +179,5 @@ class LecturerActivity : AppCompatActivity() {
         lecturer_name_et.text.clear()
         position_et.text.clear()
         lecturer_department_et.text.clear()
-    }
-
-    private fun hideKeyboard(activity: AppCompatActivity) {
-        val view = activity.currentFocus
-        if (android.os.Build.VERSION.SDK_INT >= 26) {
-            val imm: InputMethodManager =
-                activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            view?.post {
-                imm.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
-            }
-        } else {
-            if (view != null) {
-                val imm =
-                    activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-        }
     }
 }

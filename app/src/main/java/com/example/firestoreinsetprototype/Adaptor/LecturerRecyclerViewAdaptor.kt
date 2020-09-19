@@ -9,7 +9,8 @@ import com.example.firestoreinsetprototype.R
 import kotlinx.android.synthetic.main.activity_lecturer.view.*
 import kotlinx.android.synthetic.main.lecturer_item.view.*
 
-class LecturerRecyclerViewAdaptor(val lecturers: ArrayList<Lecturer>):RecyclerView.Adapter<LecturerRecyclerViewAdaptor.LecturerHolder>(){
+class LecturerRecyclerViewAdaptor(val lecturers: ArrayList<Lecturer>)
+    :RecyclerView.Adapter<LecturerRecyclerViewAdaptor.LecturerHolder>(){
 
     interface OnItemClickListener {
         fun onClick(v: View, position : Int)
