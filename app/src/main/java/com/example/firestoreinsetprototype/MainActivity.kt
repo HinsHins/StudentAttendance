@@ -11,18 +11,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        student_button.setOnClickListener {
+        cardStudent.setOnClickListener {
             val intent = Intent(this, StudentActivity::class.java)
             startActivity(intent)
         }
 
-        lecturer_button.setOnClickListener {
+        cardLecturer.setOnClickListener {
             val intent = Intent(this, LecturerActivity::class.java)
             startActivity(intent)
         }
 
-        module_button.setOnClickListener{
+        cardModule.setOnClickListener{
             val intent = Intent(this,ModuleActivity::class.java)
+            startActivity(intent)
+        }
+
+        cardLogout.setOnClickListener {
+            val intent = Intent(this,LoginActivity::class.java)
             startActivity(intent)
         }
     }

@@ -56,7 +56,7 @@ class ModuleActivity : AppCompatActivity() {
             var credit = module_credit_et.text.toString().trim()
 
             if (id != "" && name != "" && year != "" && level != "" && credit != "") {
-                var module = Module(id.toInt(), name, year.toInt(), level.toInt(), credit.toInt())
+                var module = Module(id.toInt(),name, year.toInt(), level.toInt(), credit.toInt())
                 Log.d("Module", "$module")
                 hideKeyboard()
                 clearInput()
