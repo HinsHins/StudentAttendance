@@ -5,5 +5,6 @@ class Module(
     var name:String="",
     var year:Int=0,
     var level:Int=0,
-    var credit:Int=0
+    var credit:Int=0,
+    var lecturerId:Int = 0
 )

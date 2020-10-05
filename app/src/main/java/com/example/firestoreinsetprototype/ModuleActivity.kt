@@ -8,8 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Adapter
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firestoreinsetprototype.Adaptor.ModuleRecyclerViewAdaptor
@@ -24,6 +23,10 @@ import kotlinx.android.synthetic.main.activity_module.*
 class ModuleActivity : AppCompatActivity() {
 
     private val modules = ArrayList<Module>()
+    private val lecturers = ArrayList<Lecturer>()
+    private val lecturersString =ArrayList<String>()
+    private var selectedLecturer:Lecturer? = null
+
     var fb = FirebaseFirestore.getInstance()
     lateinit var moduleAdapter: ModuleRecyclerViewAdaptor
 
@@ -54,9 +57,10 @@ class ModuleActivity : AppCompatActivity() {
             var year = module_year_et.text.toString().trim()
             var level = module_level_et.text.toString().trim()
             var credit = module_credit_et.text.toString().trim()
+            var lecturer = selectedLecturer?.id
 
-            if (id != "" && name != "" && year != "" && level != "" && credit != "") {
-                var module = Module(id.toInt(),name, year.toInt(), level.toInt(), credit.toInt())
+            if (id != "" && name != "" && year != "" && level != "" && credit != "" && lecturer != null) {
+                var module = Module(id.toInt(),name, year.toInt(), level.toInt(), credit.toInt(),lecturer)
                 Log.d("Module", "$module")
                 hideKeyboard()
                 clearInput()
@@ -66,8 +70,8 @@ class ModuleActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all fields before insert", Toast.LENGTH_SHORT).show()
         }
 
-        val ModuleRef = fb.collection("modules")
-        ModuleRef.get()
+        val moduleRef = fb.collection("modules")
+        moduleRef.get()
             .addOnSuccessListener { result ->
                 for(document in result){
                     Log.d("Module", "${document.id} => ${document.data}")
@@ -81,6 +85,37 @@ class ModuleActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.d("", "Error getting document",exception)
             }
+
+        val spinner: Spinner = findViewById(R.id.lecturerSpinner)
+        val arrayadapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,lecturersString)
+        arrayadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = arrayadapter
+        spinner.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                selectedLecturer = lecturers[p2]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
+        val lecturerRef = fb.collection("lecturers")
+        lecturerRef.get()
+            .addOnSuccessListener { result->
+                for (document in result){
+                    Log.d("Lecturer", "${document.id} => ${document.data}")
+                    var lecturer = document.toObject(Lecturer::class.java)
+                    Log.d("Lecturer object", "$lecturers")
+                    lecturers.add(lecturer)
+                    lecturersString.add(lecturer.name)
+                }
+                Log.d("load Lecturer", "$lecturersString")
+                arrayadapter.notifyDataSetChanged()
+
+            }
+
+
     }
 
     private fun writeModule(module: Module) {
