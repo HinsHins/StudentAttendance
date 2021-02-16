@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         cardLogout.setOnClickListener {
-            val intent = Intent(this,LoginActivity::class.java)
+            val intent = Intent(this,ProgrammeActivity::class.java)
             startActivity(intent)
         }
     }
