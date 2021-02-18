@@ -33,29 +33,28 @@
         android:hint="Student Name"
         />
 
-    <EditText
-        android:id="@+id/semail_et"
+<!--    <EditText-->
+<!--        android:id="@+id/semail_et"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:hint="Student Email"-->
+<!--        />-->
+
+    <Spinner
+        android:id="@+id/sprogramme_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Student Email"
         />
 
-    <EditText
-        android:id="@+id/sprogramme_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Programme"
-        />
-
-    <EditText
-        android:id="@+id/scountry_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Country"
-        />
+<!--    <EditText-->
+<!--        android:id="@+id/scountry_et"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:hint="Country"-->
+<!--        />-->
 
     <Button
         android:id="@+id/student_insert"

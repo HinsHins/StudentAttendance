@@ -36,47 +36,77 @@
             android:layout_marginRight="20dp"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center">-->
 
-        <TextView
-            android:text="Year:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/module_year_tv"
-            android:text="3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="20dp"/>
+<!--        <TextView-->
+<!--            android:text="Year:"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/module_year_tv"-->
+<!--            android:text="3"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_marginRight="20dp"/>-->
 
-        <TextView
-            android:text="Level:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/module_level_tv"
-            android:text="6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="20dp"/>
+<!--        <TextView-->
+<!--            android:text="Level:"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/module_level_tv"-->
+<!--            android:text="6"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_marginRight="20dp"/>-->
 
-        <TextView
-            android:text="Credit:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/module_credit_tv"
-            android:text="30"
-            android:layout_width="wrap_content"
+<!--        <TextView-->
+<!--            android:text="Credit:"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/module_credit_tv"-->
+<!--            android:text="30"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_marginRight="20dp"/>-->
+<!--    </LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="20dp"/>
-    </LinearLayout>
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/startDate_tv"
+                android:text="2020-05-05"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"/>
+
+            <TextView
+                android:id="@+id/programme_tv"
+                android:text="Bsc Computer Science"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"/>
+
+            <TextView
+                android:id="@+id/lecturer_tv"
+                android:text="Searching"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
 
 
 

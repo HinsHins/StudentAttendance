@@ -57,11 +57,11 @@ class StudentRecyclerViewAdaptor(students: ArrayList<Student>) : RecyclerView.Ad
 
         fun bindStudent(student: Student) {
             this.student = student
-            view.sid_tv.text = student.id.toString()
+            view.sid_tv.text = student.id
             view.student_name_tv.text = student.name
-            view.student_email_tv.text = student.email
+//            view.student_email_tv.text = student.email
             view.programme_tv.text = student.programme
-            view.country_tv.text = student.country
+//            view.country_tv.text = student.country
         }
     }
 }

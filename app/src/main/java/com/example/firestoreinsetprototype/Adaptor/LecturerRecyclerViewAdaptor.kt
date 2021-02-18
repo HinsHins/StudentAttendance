@@ -57,7 +57,7 @@ class LecturerRecyclerViewAdaptor(val lecturers: ArrayList<Lecturer>)
 
         fun bindLecturer(lecturer: Lecturer) {
             this.lecturer = lecturer
-            view.lecturer_id_tv.text = lecturer.id.toString()
+            view.lecturer_id_tv.text = lecturer.id
             view.lecturer_name_tv.text = lecturer.name
             view.lecturer_position_tv.text = lecturer.position
             view.lecturer_department_tv.text = lecturer.department

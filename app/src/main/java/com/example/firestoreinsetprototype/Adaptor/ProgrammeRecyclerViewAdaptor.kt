@@ -58,8 +58,8 @@ class ProgrammeRecyclerViewAdaptor(programmes: ArrayList<Programme>) : RecyclerV
 
         fun bindProgramme(programme: Programme) {
             this.programme = programme
-            view.programme_id_tv.text = programme.id.toString()
-            view.programme_name_tv.text = programme.name.toString()
+            view.programme_id_tv.text = programme.id
+            view.programme_name_tv.text = programme.name
         }
     }
 }

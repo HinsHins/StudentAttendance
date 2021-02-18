@@ -48,11 +48,19 @@ class ModuleRecyclerViewAdaptor(val modules:ArrayList<Module>):RecyclerView.Adap
         private var module:Module? = null
         fun bindModule(module: Module){
             this.module = module
-            view.module_id_tv.text = module.id.toString()
+            view.module_id_tv.text = module.id
             view.module_name_tv.text = module.name
-            view.module_year_tv.text = module.year.toString()
-            view.module_level_tv.text = module.credit.toString()
-            view.module_credit_tv.text = module.credit.toString()
+            view.startDate_tv.text = module.startDate?.toDate()?.date.toString() + "-" + module.startDate?.toDate()?.month?.plus(1)
+                .toString() + "-" +
+                    (module.startDate?.toDate()?.year?.plus(
+                        1900
+                    )).toString()
+            view.programme_tv.text = module.programmeName
+            view.lecturer_tv.text = module.lecturerName
+
+           // view.module_year_tv.text = module.year.toString()
+            //view.module_level_tv.text = module.credit.toString()
+            //view.module_credit_tv.text = module.credit.toString()
         }
     }
 

@@ -8,12 +8,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firestoreinsetprototype.Adaptor.StudentAdaptor
 import com.example.firestoreinsetprototype.Adaptor.StudentRecyclerViewAdaptor
 import com.example.firestoreinsetprototype.Extension.hideKeyboard
+import com.example.firestoreinsetprototype.Model.Attendance
+import com.example.firestoreinsetprototype.Model.Module
+import com.example.firestoreinsetprototype.Model.Programme
 import com.example.firestoreinsetprototype.Model.Student
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
@@ -24,8 +30,17 @@ import java.security.cert.Extension
 
 class StudentActivity : AppCompatActivity() {
     private val students = ArrayList<Student>()
+    private val programmes = ArrayList<Programme>()
+    private val modules = ArrayList<Module>()
+
+    private val programmesString =ArrayList<String>()
+    private var selectedProgramme:Programme? = null
+
+    private val attendances = ArrayList<Attendance>()
     val fb = FirebaseFirestore.getInstance()
     lateinit var studentAdapter : StudentRecyclerViewAdaptor
+    //implement after insertion work
+    //lateinit var attendanceAdapter: AttendanceRecyclerViewAdaptor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,12 +70,12 @@ class StudentActivity : AppCompatActivity() {
         student_insert.setOnClickListener {
             var id = sid_et.text.toString().trim()
             var name = sname_et.text.toString().trim()
-            var email = semail_et.text.toString().trim()
-            var programme = sprogramme_et.text.toString().trim()
-            var country = scountry_et.text.toString().trim()
+//            var email = semail_et.text.toString().trim()
+            var programme = selectedProgramme
+//            var country = scountry_et.text.toString().trim()
 
-            if (id != "" && name != "" && email != "" && programme != "" && country != "") {
-                var student = Student(id.toInt(), name, email, programme, country)
+            if (id != "" && name != "" && programme != null ) {
+                var student = Student(id, name, programme.id)
                 Log.d("Student", "$student")
                 hideKeyboard()
                 clearInputs()
@@ -91,6 +106,53 @@ class StudentActivity : AppCompatActivity() {
                 Log.d("", "Error getting documents: ", exception)
             }
 
+        val programmeRef = fb.collection("programmes")
+        programmeRef.get()
+            .addOnSuccessListener { result->
+                for(document in result){
+                    Log.d("Programme", "${document.id} => ${document.data}")
+                    var programme = document.toObject(Programme::class.java)
+                    Log.d("Programme","$programme")
+                    programmes.add(programme)
+                    programmesString.add(programme.name)
+                }
+                Log.d("load Programme", "$programmes")
+                //studentAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("", "Error getting documents: ", exception)
+            }
+
+        val moduleRef = fb.collection("modules")
+        moduleRef.get()
+            .addOnSuccessListener { result->
+                for(document in result){
+                    Log.d("Module", "${document.id} => ${document.data}")
+                    var module = document.toObject(Module::class.java)
+                    Log.d("Module","$module")
+                    modules.add(module)
+                }
+                Log.d("load Module", "$modules")
+                //studentAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("", "Error getting documents: ", exception)
+            }
+
+        val programme_spinner: Spinner = findViewById(R.id.sprogramme_spinner)
+        val arrayadapter_programme = ArrayAdapter(this,android.R.layout.simple_spinner_item,programmesString)
+        arrayadapter_programme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        programme_spinner.adapter = arrayadapter_programme
+        programme_spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                selectedProgramme = programmes[p2]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
     }
 
     override fun onStop() {
@@ -102,9 +164,9 @@ class StudentActivity : AppCompatActivity() {
     private fun clearInputs(){
         sid_et.text.clear()
         sname_et.text.clear()
-        semail_et.text.clear()
-        sprogramme_et.text.clear()
-        scountry_et.text.clear()
+//        semail_et.text.clear()
+//        sprogramme_et.text.clear()
+//        scountry_et.text.clear()
     }
 
     private fun writeStudent(student: Student) {
@@ -189,12 +251,126 @@ class StudentActivity : AppCompatActivity() {
 
     }
 
+    private fun programmeRealTimeUpdate(programmeRef:CollectionReference){
+        programmeRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("Fail", "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            val source = if (snapshot != null && snapshot.metadata.hasPendingWrites())
+                "Local"
+            else
+                "Server"
+            Log.d("snapshot", snapshot.toString())
+            if (snapshot != null) {
+                for (dc in snapshot.documentChanges) {
+                    val doc = dc.document.toObject(Programme::class.java)
+                    Log.d("dc.type", dc.type.toString())
+                    when (dc.type) {
+                        DocumentChange.Type.ADDED -> {
+                            if(hasProgramme(programmes,doc) == null) {
+                                programmes.add(doc)
+                                Log.d("adding programme", doc.toString())
+                            }
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            hasProgramme(programmes,doc).let { programme ->
+                                val index = programmes.indexOf(programme)
+                                programmes[index] = doc
+                                Log.d("modify programme", doc.toString())
+                            }
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            hasProgramme(programmes,doc).let { programme ->
+                                programmes.remove(programme)
+                                Log.d("removing programme", doc.toString())
+                            }
+                        }
+                    }
+                }
+                Log.d("RealTimeUpdate", "$programmes")
+                //Spinner
+                //studentAdapter.notifyDataSetChanged()
+            } else {
+                android.util.Log.d("null", "$source data: null")
+            }
+        }
+
+    }
+
+    private fun moduleRealTimeUpdate(moduleRef:CollectionReference){
+        moduleRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("Fail", "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            val source = if (snapshot != null && snapshot.metadata.hasPendingWrites())
+                "Local"
+            else
+                "Server"
+            Log.d("snapshot", snapshot.toString())
+            if (snapshot != null) {
+                for (dc in snapshot.documentChanges) {
+                    val doc = dc.document.toObject(Module::class.java)
+                    Log.d("dc.type", dc.type.toString())
+                    when (dc.type) {
+                        DocumentChange.Type.ADDED -> {
+                            if(hasModule(modules,doc) == null) {
+                                modules.add(doc)
+                                Log.d("adding module", doc.toString())
+                            }
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            hasModule(modules,doc).let { module ->
+                                val index = modules.indexOf(module)
+                                modules[index] = doc
+                                Log.d("modify module", doc.toString())
+                            }
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            hasModule(modules,doc).let { module ->
+                                modules.remove(module)
+                                Log.d("removing module", doc.toString())
+                            }
+                        }
+                    }
+                }
+                Log.d("RealTimeUpdate", "$modules")
+                //Spinner
+                //studentAdapter.notifyDataSetChanged()
+            } else {
+                android.util.Log.d("null", "$source data: null")
+            }
+        }
+
+    }
+
     /* ArrayList<Student> -> listview dataset
        Student -> from firebase
     */
     private fun hasStudent(arr : ArrayList<Student> , student: Student): Student? {
         for(index in 0 until arr.size) {
             if(student.id == arr[index].id) {
+                return arr[index]
+            }
+        }
+        return null
+    }
+
+    private fun hasProgramme(arr : ArrayList<Programme> , programme: Programme): Programme? {
+        for(index in 0 until arr.size) {
+            if(programme.id == arr[index].id) {
+                return arr[index]
+            }
+        }
+        return null
+    }
+
+    private fun hasModule(arr : ArrayList<Module> , module: Module): Module? {
+        for(index in 0 until arr.size) {
+            if(module.id == arr[index].id) {
                 return arr[index]
             }
         }

@@ -32,23 +32,47 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"/>
 
-    <EditText
-        android:id="@+id/module_year_et"
-        android:hint="Year"
+<!--    <EditText-->
+<!--        android:id="@+id/module_year_et"-->
+<!--        android:hint="Year"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"/>-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/module_level_et"-->
+<!--        android:hint="Level"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"/>-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/module_credit_et"-->
+<!--        android:hint="Credit"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"/>-->
+
+
+    <Button
+    android:id="@+id/startDate_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:text="Start Date"
+  />
+
+    <TextView
+        android:id="@+id/selectedDate_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"/>
+        android:gravity="center"
+        android:text=""
+        android:padding="10dp"/>
 
-    <EditText
-        android:id="@+id/module_level_et"
-        android:hint="Level"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:id="@+id/module_credit_et"
-        android:hint="Credit"
+    <Spinner
+        android:id="@+id/programmeSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"/>

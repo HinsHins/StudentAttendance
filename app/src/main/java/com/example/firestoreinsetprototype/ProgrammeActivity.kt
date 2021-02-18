@@ -59,7 +59,7 @@ class ProgrammeActivity : AppCompatActivity() {
             var name = programme_name_et.text.toString().trim()
 
             if (id != "" && name != "" ) {
-                var programme = Programme(id.toInt(), name)
+                var programme = Programme(id, name)
                 Log.d("Programme", "$programme")
                 hideKeyboard()
                 clearInputs()

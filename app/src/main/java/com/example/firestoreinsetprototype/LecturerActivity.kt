@@ -53,7 +53,7 @@ class LecturerActivity : AppCompatActivity() {
             var department = lecturer_department_et.text.toString().trim()
 
             if (id != "" && name != "" && position != "" && department != "") {
-                var lecturer = Lecturer(id.toInt(), name, position, department)
+                var lecturer = Lecturer(id, name, position, department)
                 Log.d("Lecturer", "$lecturer")
                 hideKeyboard()
                 clearInputs()
