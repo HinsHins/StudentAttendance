@@ -93,7 +93,6 @@ class ModuleActivity : AppCompatActivity() {
             } else
                 Toast.makeText(this, "Please fill all fields before insert", Toast.LENGTH_SHORT).show()
         }
-
         val moduleRef = fb.collection("modules")
         moduleRef.get()
             .addOnSuccessListener { result ->

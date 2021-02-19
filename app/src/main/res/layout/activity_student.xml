@@ -42,11 +42,10 @@
 <!--        />-->
 
     <Spinner
-        android:id="@+id/sprogramme_spinner"
+        android:id="@+id/sprogrammeSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_marginTop="20dp"/>
 
 <!--    <EditText-->
 <!--        android:id="@+id/scountry_et"-->

@@ -106,6 +106,20 @@ class StudentActivity : AppCompatActivity() {
                 Log.d("", "Error getting documents: ", exception)
             }
 
+        val programme_spinner: Spinner = findViewById(R.id.sprogrammeSpinner)
+        val arrayadapter_programme = ArrayAdapter(this,android.R.layout.simple_spinner_item,programmesString)
+        arrayadapter_programme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        programme_spinner.adapter = arrayadapter_programme
+        programme_spinner.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                selectedProgramme = programmes[p2]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
         val programmeRef = fb.collection("programmes")
         programmeRef.get()
             .addOnSuccessListener { result->
@@ -139,19 +153,7 @@ class StudentActivity : AppCompatActivity() {
                 Log.d("", "Error getting documents: ", exception)
             }
 
-        val programme_spinner: Spinner = findViewById(R.id.sprogramme_spinner)
-        val arrayadapter_programme = ArrayAdapter(this,android.R.layout.simple_spinner_item,programmesString)
-        arrayadapter_programme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        programme_spinner.adapter = arrayadapter_programme
-        programme_spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                selectedProgramme = programmes[p2]
-            }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-        }
 
     }
 
