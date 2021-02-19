@@ -13,4 +13,7 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorBackground">#ECECEC</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="editTextBG">#DADADA</color>
+    <color name="transparent">#00000000</color>
+    <color name="textColor">#6e6e6e</color>
 </resources>
