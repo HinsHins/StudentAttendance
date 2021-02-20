@@ -6,14 +6,26 @@ import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.firestoreinsetprototype.Constant.FirestoreCollectionPath
+import com.example.firestoreinsetprototype.Model.ModelBase
+import com.example.firestoreinsetprototype.Model.Module
+import com.example.firestoreinsetprototype.Model.User
+import com.example.firestoreinsetprototype.Util.SpinnerUtil
+import com.example.firestoreinsetprototype.Util.retrieveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
+
+    private val userPath = FirestoreCollectionPath.USER_PATH
+    private val users = ArrayList<User>()
+    var fb = FirebaseFirestore.getInstance()
 
     val auth = FirebaseAuth.getInstance()
     lateinit var nextScreen : Intent
@@ -22,7 +34,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        nextScreen = Intent(this, MainActivity::class.java)
         btn_login.setOnClickListener {
             val email = et_email.text.toString().trim()
             val password = et_password.text.toString().trim()
@@ -38,6 +49,8 @@ class LoginActivity : AppCompatActivity() {
         tv_forgotPwd.setOnClickListener{ view ->
             showRecoveryAlert()
         }
+
+        retrieveUsers()
 
 //        register_button.setOnClickListener {
 ////            val intent = Intent(this,RegisterActivity::class.java)
@@ -91,6 +104,17 @@ class LoginActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("Success", "signInWithEmail:success")
                     val user = auth.currentUser
+                    val currentUser = users.filter {
+                        user?.uid == it.id
+                    }.first()
+                    if(currentUser.role == "admin"){
+                        nextScreen = Intent(this, MainActivity::class.java)
+                        nextScreen.putExtra("email",currentUser.email)
+                    }else{
+                        nextScreen = Intent(this, ProfileActivity::class.java)
+                        nextScreen.putExtra("email",currentUser.email)
+                    }
+
                     startActivity(nextScreen)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -114,6 +138,13 @@ class LoginActivity : AppCompatActivity() {
         }.addOnFailureListener{
             progressDialog?.dismiss()
             Toast.makeText(this, "${it.toString()}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun retrieveUsers(){
+        val userCollection = fb.collection(FirestoreCollectionPath.USER_PATH)
+        userCollection.retrieveData(users as ArrayList<ModelBase>, User::class.java) {
+
         }
     }
 }

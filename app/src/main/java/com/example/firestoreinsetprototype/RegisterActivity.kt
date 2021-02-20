@@ -51,7 +51,7 @@ class RegisterActivity : AppCompatActivity() {
                     val user = auth.currentUser
 
                     if(user != null && user.email != null ) {
-                        val myUser = User(user.uid, user.email ?: "", selectedRole)
+                        val myUser = User(user.uid, "",user.email ?: "", selectedRole)
                         writeUser(myUser)
                     }
                 } else {
@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun writeUser(user: User) {
         val programmeCollection = fb.collection(usersPath)
 
-        programmeCollection.document(user.uid)
+        programmeCollection.document(user.id)
             .set(user)
             .addOnSuccessListener {
                 Log.d("", "User successfully written!")

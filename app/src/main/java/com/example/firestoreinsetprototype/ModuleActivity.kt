@@ -2,10 +2,13 @@ package com.example.firestoreinsetprototype
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
+import android.util.TimeUtils
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -26,7 +29,9 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
 import kotlinx.android.synthetic.main.activity_module.*
+import java.sql.Time
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class ModuleActivity : AppCompatActivity() {
@@ -45,9 +50,12 @@ class ModuleActivity : AppCompatActivity() {
 
     @ServerTimestamp
     var Fdate = Date()
+    var Ftime = Date()
     var fyear:Int = 0
     var fmonth:Int = 0
     var fday:Int = 0
+    var fhour:Int = 0
+    var fminute:Int = 0
 
 
     var fb = FirebaseFirestore.getInstance()
@@ -79,6 +87,7 @@ class ModuleActivity : AppCompatActivity() {
             var name = module_name_et.text.toString().trim()
             var numOfWeek = number_of_week_et.text.toString().toInt()
             Fdate = Date(DateUtil.toYearFrom(datePickerYear = fyear),fmonth,fday)
+            Ftime= Date(0,0,0,fhour,fminute)
           //  var year = module_year_et.text.toString().trim()
            // var level = module_level_et.text.toString().trim()
            // var credit = module_credit_et.text.toString().trim()
@@ -88,7 +97,11 @@ class ModuleActivity : AppCompatActivity() {
             //if (id != "" && name != "" && year != "" && level != "" && credit != "" && lecturer != null) {
             if (id != "" && name != "" && lecturer != null && programme != null) {
                 //var module = Module(id.toInt(),name, year.toInt(), level.toInt(), credit.toInt(),lecturer)
-                var module = Module(id,name,Timestamp(Fdate),lecturer.id.toString(),lecturer.name,programme.id.toString(),programme.name,numOfWeek)
+                var module =
+                    Module(id,name,Timestamp(Fdate),lecturer.id.toString(),lecturer.name,
+                        programme.id.toString(), programme.name,numOfWeek,Timestamp(Ftime))
+
+
                 Log.d("Module", "$module")
                 hideKeyboard()
                 clearInput()
@@ -128,9 +141,37 @@ class ModuleActivity : AppCompatActivity() {
             }
         }
 
+        class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
+
+            override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+                // Use the current time as the default values for the picker
+                val c = Calendar.getInstance()
+                val hour = c.get(Calendar.HOUR_OF_DAY)
+                val minute = c.get(Calendar.MINUTE)
+
+                // Create a new instance of TimePickerDialog and return it
+                return TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
+            }
+
+            override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
+                // Do something with the time chosen by the user
+                fhour = hour
+                fminute = minute
+                Log.d("Hour", "$fhour")
+                Log.d("Minute", "$fminute")
+                var selectedTime = findViewById<TextView>(R.id.selectedTime_tv)
+                selectedTime.text = fhour.toString() + "-" + fminute.toString()
+            }
+        }
+
         startDate_button.setOnClickListener {
             DatePickerFragment()
                 .show(supportFragmentManager, "datePicker")
+        }
+
+        startTime_button.setOnClickListener{
+            TimePickerFragment()
+                .show(supportFragmentManager, "timePicker")
         }
 
     }

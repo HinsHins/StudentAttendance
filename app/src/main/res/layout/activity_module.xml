@@ -95,6 +95,28 @@
             android:text="" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp">
+        <Button
+            android:id="@+id/startTime_button"
+            android:layout_width="0dp"
+            android:layout_weight="0.50"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            />
+        <TextView
+            android:id="@+id/selectedTime_tv"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.50"
+            android:gravity="center"
+            android:text="" />
+    </LinearLayout>
+
 
 
     <Button

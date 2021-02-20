@@ -209,7 +209,7 @@ class StudentActivity : AppCompatActivity() {
 //                }
 //               val date = (if (week == 1) it.startDate?.toDate() else DateUtil.addDays(it.startDate ?: Timestamp(Date()),7) ) ?: Date()
                 val timestampDate = Timestamp(cumulativeDate)
-                attendances.add(Attendance(student.id, false,timestampDate,null,it.name,"lecture",week))
+                attendances.add(Attendance(UUID.randomUUID().toString(),"",student.id, false,timestampDate,null,it.lecturerId,it.id,it.name,"lecture",week))
                 cumulativeDate = DateUtil.addDays(cumulativeDate,7)
             }
         }

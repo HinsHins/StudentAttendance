@@ -5,15 +5,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firestoreinsetprototype.Adaptor.LecturerRecyclerViewAdaptor
 import com.example.firestoreinsetprototype.Constant.FirestoreCollectionPath
+import com.example.firestoreinsetprototype.Constant.FirestoreCollectionPath.USER_PATH
 import com.example.firestoreinsetprototype.Extension.hideKeyboard
 import com.example.firestoreinsetprototype.Model.Lecturer
 import com.example.firestoreinsetprototype.Model.ModelBase
 import com.example.firestoreinsetprototype.Model.Programme
+import com.example.firestoreinsetprototype.Model.User
+import com.example.firestoreinsetprototype.Util.SpinnerUtil
 import com.example.firestoreinsetprototype.Util.realTimeUpdate
 import com.example.firestoreinsetprototype.Util.retrieveData
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,6 +27,10 @@ class LecturerActivity : AppCompatActivity() {
 
     private val lecturersPath = FirestoreCollectionPath.LECTURERS_PATH
     private val lecturers = ArrayList<Lecturer>()
+    private val users = ArrayList<User>()
+    private var selectedUser:User? = null
+
+
     var fb = FirebaseFirestore.getInstance()
     lateinit var lecturerAdapter: LecturerRecyclerViewAdaptor
 
@@ -53,9 +61,10 @@ class LecturerActivity : AppCompatActivity() {
             var name = lecturer_name_et.text.toString().trim()
             var position = position_et.text.toString().trim()
             var department = lecturer_department_et.text.toString().trim()
+            var email = selectedUser?.email
 
-            if (id != "" && name != "" && position != "" && department != "") {
-                var lecturer = Lecturer(id, name, position, department)
+            if (id != "" && name != "" && email != null && position != "" && department != "") {
+                var lecturer = Lecturer(id, name,email,position, department)
                 Log.d("Lecturer", "$lecturer")
                 hideKeyboard()
                 clearInputs()
@@ -65,6 +74,7 @@ class LecturerActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all fields before insert", Toast.LENGTH_SHORT).show()
         }
         retrieveLecturers()
+        retrieveUsers()
     }
 
     override fun onStop() {
@@ -118,10 +128,28 @@ class LecturerActivity : AppCompatActivity() {
             }
     }
 
+    private fun retrieveUsers(){
+        val userCollection = fb.collection(USER_PATH)
+        userCollection.retrieveData(users as ArrayList<ModelBase>, User::class.java) {
+            val usersString = users.map { it.email } as ArrayList<String>
+            val emailSpinner: Spinner = findViewById(R.id.email_Spinner)
+            val userAdapter =  SpinnerUtil.setupSpinner(
+                this,
+                emailSpinner,
+                usersString
+            ){
+                selectedUser = users[it]
+            }
+            userAdapter.notifyDataSetChanged()
+        }
+    }
+
     private fun clearInputs() {
         lecturer_id_et.text.clear()
         lecturer_name_et.text.clear()
         position_et.text.clear()
         lecturer_department_et.text.clear()
     }
+
+
 }

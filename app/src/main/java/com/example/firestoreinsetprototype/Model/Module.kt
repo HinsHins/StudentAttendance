@@ -13,5 +13,6 @@ class Module(
     var lecturerName:String="",
     var programmeId:String="",
     var programmeName:String="",
-    var numOfWeek : Int = 0
+    var numOfWeek : Int = 0,
+    var startTime:Timestamp?=null
 ) : ModelBase
